@@ -17,10 +17,14 @@ public partial class Player : CharacterBody3D
 	{
 		GD.Print("player ready");
 	}
-
+	
 	public override void _PhysicsProcess(double delta)
 	{
-		Rotation = new Vector3(Rotation.X, camera.GlobalRotation.Y, Rotation.Z);
+		if (!Input.IsActionPressed("freeCamera"))
+		{
+			Rotation = new Vector3(Rotation.X, camera.GlobalRotation.Y, Rotation.Z);
+		}
+		
 
 		Vector3 velocity = Velocity;
 
