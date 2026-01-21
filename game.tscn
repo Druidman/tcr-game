@@ -1,0 +1,57 @@
+[gd_scene load_steps=11 format=3 uid="uid://c2tsu7d7l4pgf"]
+
+[ext_resource type="Script" uid="uid://dcf3bbiw8xgr" path="res://Camera.cs" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://clov5kbtha4kp" path="res://Game.cs" id="1_feb5d"]
+[ext_resource type="Script" uid="uid://3exxb7dwfykf" path="res://Player.cs" id="2_feb5d"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mwb40"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_80nbo"]
+sky_material = SubResource("ProceduralSkyMaterial_mwb40")
+
+[sub_resource type="Environment" id="Environment_e2o6t"]
+background_mode = 2
+sky = SubResource("Sky_80nbo")
+tonemap_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_feb5d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fc0e3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e2o6t"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fc0e3"]
+size = Vector3(10, 1, 10)
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_feb5d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e2o6t")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0542645)
+script = ExtResource("1_e2o6t")
+player = NodePath("../CharacterBody3D")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("2_feb5d")
+camera = NodePath("../Camera3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("BoxMesh_feb5d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("BoxShape3D_fc0e3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_e2o6t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_fc0e3")
